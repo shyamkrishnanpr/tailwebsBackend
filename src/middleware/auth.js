@@ -1,20 +1,28 @@
-export const teacherAuth = async (req, res, next) => {
-  const tokenData = req.header("Authorization");
+import jwt from "jsonwebtoken";
 
-  console.log("in verify", tokenData);
+const teacherAuth = async (req, res, next) => {
+  const tokenData = req.header("Authorization");
 
   if (!tokenData) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const tokenJson = JSON.parse(tokenData.split(" ")[1]);
-  const token = tokenJson.token;
+  try {
+    const tokenJson = JSON.parse(tokenData);
+    const token = tokenJson.token;
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  if (!decoded) {
-    return res.status(401).json({ message: "Unauthorized" });
+    if (!decoded) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    next();
+  } catch (error) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized", error: error.message });
   }
-
-  next();
 };
+
+export default { teacherAuth };

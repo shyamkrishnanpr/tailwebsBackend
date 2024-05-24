@@ -1,4 +1,6 @@
 import express from "express";
+
+import authMiddleware from "../middleware/auth.js";
 import {
   teacherLogin,
   addStudentDetails,
@@ -11,19 +13,23 @@ const router = express.Router();
 
 // GET
 
-router.get("/studentData", getStudentsDetails);
+router.get("/studentData", authMiddleware.teacherAuth, getStudentsDetails);
 
 // POST
 
 router.post("/login", teacherLogin);
-router.post("/addStudent", addStudentDetails);
+router.post("/addStudent", authMiddleware.teacherAuth, addStudentDetails);
 
 // PUT
 
-router.put("/editStudent/:id", editStudentDetails);
+router.put("/editStudent/:id", authMiddleware.teacherAuth, editStudentDetails);
 
 // DELETE
 
-router.delete("/deleteStudent/:id", deleteStudentDetail);
+router.delete(
+  "/deleteStudent/:id",
+  authMiddleware.teacherAuth,
+  deleteStudentDetail
+);
 
 export default router;

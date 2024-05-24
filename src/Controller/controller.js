@@ -140,5 +140,5 @@ export {
   addStudentDetails,
   getStudentsDetails,
   editStudentDetails,
-  deleteStudentDetail
+  deleteStudentDetail,
 };
