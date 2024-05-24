@@ -6,7 +6,9 @@ const db = async () => {
     const db = await connect(process.env.MONG_URI, {}).then(() => {
       console.log("Database connected successfully");
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("not connected");
+  }
 };
 
 export default db;
